@@ -110,9 +110,9 @@
     // Loop through all matching textareas and create the editors
     this.each(function(idx, elem) {
       if (elem.tagName == "TEXTAREA") {
-        var data = $.data(elem, CLEDITOR);
+        var data = $.data(elem, CLEDITOR); /*WARN: jquery 1.9.X changes data() functionality*/
         if (!data) data = new cleditor(elem, options);
-        $result = $result.add(data);
+        $result = $result.add(data); //WARN: jquery 1.9.X changes add() functionality
       }
     });
 
@@ -153,7 +153,7 @@
   MSG_CLASS        = "cleditorMsg",     // message popup div inside body
 
   // Test for ie
-  ie = $.browser.msie,
+  ie = /msie/i.test(navigator.userAgent),
   ie6 = /msie\s6/i.test(navigator.userAgent),
 
   // Test for iPhone/iTouch/iPad
@@ -202,7 +202,7 @@
     // Hide the textarea and associate it with this editor
     var $area = editor.$area = $(area)
       .hide()
-      .data(CLEDITOR, editor)
+      .data(CLEDITOR, editor) /*WARN: jquery 1.9.X changes data() functionality*/
       .blur(function() {
         // Update the iframe when the textarea loses focus
         updateFrame(editor, true);
@@ -217,12 +217,12 @@
     // Create the toolbar
     var $toolbar = editor.$toolbar = $(DIV_TAG)
       .addClass(TOOLBAR_CLASS)
-      .appendTo($main);
+      .appendTo($main); /*WARN: jquery 1.9.X changes appendTo() functionality*/
 
     // Add the first group to the toolbar
     var $group = $(DIV_TAG)
       .addClass(GROUP_CLASS)
-      .appendTo($toolbar);
+      .appendTo($toolbar); /*WARN: jquery 1.9.X changes appendTo() functionality*/
     
     // Add the buttons to the toolbar
     $.each(options.controls.split(" "), function(idx, buttonName) {
@@ -234,12 +234,12 @@
         // Add a new divider to the group
         var $div = $(DIV_TAG)
           .addClass(DIVIDER_CLASS)
-          .appendTo($group);
+          .appendTo($group); /*WARN: jquery 1.9.X changes appendTo() functionality*/
 
         // Create a new group
         $group = $(DIV_TAG)
           .addClass(GROUP_CLASS)
-          .appendTo($toolbar);
+          .appendTo($toolbar); /*WARN: jquery 1.9.X changes appendTo() functionality*/
 
       }
 
@@ -251,11 +251,11 @@
 
         // Add a new button to the group
         var $buttonDiv = $(DIV_TAG)
-          .data(BUTTON_NAME, button.name)
+          .data(BUTTON_NAME, button.name) /*WARN: jquery 1.9.X changes data() functionality*/
           .addClass(BUTTON_CLASS)
           .attr("title", button.title)
           .bind(CLICK, $.proxy(buttonClick, editor))
-          .appendTo($group)
+          .appendTo($group) /*WARN: jquery 1.9.X changes appendTo() functionality*/
           .hover(hoverEnter, hoverLeave);
 
         // Prepare the button image
@@ -287,7 +287,7 @@
       $(document).click(function(e) {
         // Dismiss all non-prompt popups
         var $target = $(e.target);
-        if (!$target.add($target.parents()).is("." + PROMPT_CLASS))
+        if (!$target.add($target.parents()).is("." + PROMPT_CLASS)) //WARN: jquery 1.9.X changes add() functionality
           hidePopups();
       });
       documentClickAssigned = true;
@@ -353,7 +353,7 @@
 
     var editor = this,
         buttonDiv = e.target,
-        buttonName = $.data(buttonDiv, BUTTON_NAME),
+        buttonName = $.data(buttonDiv, BUTTON_NAME), /*WARN: jquery 1.9.X changes data() functionality*/
         button = buttons[buttonName],
         popupName = button.popupName,
         popup = popups[popupName];
@@ -460,7 +460,7 @@
         }
 
         // Show the popup if not already showing for this button
-        if (buttonDiv !== $.data(popup, BUTTON)) {
+        if (buttonDiv !== $.data(popup, BUTTON)) { /*WARN: jquery 1.9.X changes data() functionality*/
           showPopup(editor, popup, buttonDiv);
           return false; // stop propagination to document click
         }
@@ -488,7 +488,7 @@
   // hoverEnter - mouseenter event handler for buttons and popup items
   function hoverEnter(e) {
     var $div = $(e.target).closest("div");
-    $div.css(BACKGROUND_COLOR, $div.data(BUTTON_NAME) ? "#FFF" : "#FFC");
+    $div.css(BACKGROUND_COLOR, $div.data(BUTTON_NAME) ? "#FFF" : "#FFC"); /*WARN: jquery 1.9.X changes data() functionality*/
   }
 
   // hoverLeave - mouseleave event handler for buttons and popup items
@@ -508,8 +508,8 @@
       return;
 
     // Get the button info
-    var buttonDiv = $.data(popup, BUTTON),
-        buttonName = $.data(buttonDiv, BUTTON_NAME),
+    var buttonDiv = $.data(popup, BUTTON), /*WARN: jquery 1.9.X changes data() functionality*/
+        buttonName = $.data(buttonDiv, BUTTON_NAME), /*WARN: jquery 1.9.X changes data() functionality*/
         button = buttons[buttonName],
         command = button.command,
         value,
@@ -591,7 +591,7 @@
     var $popup = $(DIV_TAG)
       .hide()
       .addClass(POPUP_CLASS)
-      .appendTo("body");
+      .appendTo("body"); //WARN: jquery 1.9.X changes appendTo() functionality
 
     // Add the content
 
@@ -605,7 +605,7 @@
       if (colors.length < 10)
         $popup.width("auto");
       $.each(colors, function(idx, color) {
-        $(DIV_TAG).appendTo($popup)
+        $(DIV_TAG).appendTo($popup) /*WARN: jquery 1.9.X changes appendTo() functionality*/
           .css(BACKGROUND_COLOR, "#" + color);
       });
       popupTypeClass = COLOR_CLASS;
@@ -614,7 +614,7 @@
     // Font
     else if (popupName == "font")
       $.each(options.fonts.split(","), function(idx, font) {
-        $(DIV_TAG).appendTo($popup)
+        $(DIV_TAG).appendTo($popup) /*WARN: jquery 1.9.X changes appendTo() functionality*/
           .css("fontFamily", font)
           .html(font);
       });
@@ -622,14 +622,14 @@
     // Size
     else if (popupName == "size")
       $.each(options.sizes.split(","), function(idx, size) {
-        $(DIV_TAG).appendTo($popup)
+        $(DIV_TAG).appendTo($popup) /*WARN: jquery 1.9.X changes appendTo() functionality*/
           .html("<font size=" + size + ">" + size + "</font>");
       });
 
     // Style
     else if (popupName == "style")
       $.each(options.styles, function(idx, style) {
-        $(DIV_TAG).appendTo($popup)
+        $(DIV_TAG).appendTo($popup) /*WARN: jquery 1.9.X changes appendTo() functionality*/
           .html(style[1] + style[0] + style[1].replace("<", "</"));
       });
 
@@ -805,7 +805,7 @@
     // Create a new iframe
     var $frame = editor.$frame = $('<iframe frameborder="0" src="javascript:true;">')
       .hide()
-      .appendTo($main);
+      .appendTo($main); /*WARN: jquery 1.9.X changes appendTo() functionality*/
 
     // Load the iframe document content
     var contentWindow = $frame[0].contentWindow,
@@ -932,7 +932,7 @@
     $.each(editor.$toolbar.find("." + BUTTON_CLASS), function(idx, elem) {
 
       var $elem = $(elem),
-        button = $.cleditor.buttons[$.data(elem, BUTTON_NAME)],
+        button = $.cleditor.buttons[$.data(elem, BUTTON_NAME)], /*WARN: jquery 1.9.X changes data() functionality*/
         command = button.command,
         enabled = true;
 
@@ -1046,7 +1046,7 @@
 
     // Assign the popup button and click event handler
     if (button) {
-      $.data(popup, BUTTON, button);
+      $.data(popup, BUTTON, button); /*WARN: jquery 1.9.X changes data() functionality*/
       $popup.bind(CLICK, {popup: popup}, $.proxy(popupClick, editor));
     }
 
