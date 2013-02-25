@@ -869,7 +869,7 @@
     }
 
     // Update the textarea when the iframe loses focus
-    ($.browser.mozilla ? $doc : $(contentWindow)).blur(function() {
+    (/gecko/i.test(navigator.userAgent) ? $doc : $(contentWindow)).blur(function() {
       updateTextArea(editor, true);
     });
 
@@ -917,7 +917,7 @@
   function refreshButtons(editor) {
 
     // Webkit requires focus before queryCommandEnabled will return anything but false
-    if (!iOS && $.browser.webkit && !editor.focused) {
+    if (!iOS && /webkit/i.test(navigator.userAgent) && !editor.focused) {
       editor.$frame[0].contentWindow.focus();
       window.focus();
       editor.focused = true;
